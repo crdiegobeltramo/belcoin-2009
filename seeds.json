@@ -1,0 +1,12 @@
+{
+  "network": "belcoin-mainnet",
+  "difficulty": 4,
+  "genesis_timestamp": 1700000000.0,
+  "seeds": [
+    "http://localhost:5000",
+    "https://TU_SEED_NGROK.ngrok.io",
+    "http://TU_VPS_IP:5000",
+    "https://belcoin.up.railway.app"
+  ],
+  "instructions": "Reemplaza TU_VPS_IP con tu IP y commitea"
+}

@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Nodo Seed 1 - El bootstrap principal
+  belcoin-seed:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data/seed:/app/data
+    environment:
+      - HOST=0.0.0.0
+      - PORT=5000
+    command: python main_multinodo.py --host 0.0.0.0 --port 5000 --mining --difficulty 5
+    restart: unless-stopped
+    networks:
+      - belcoin-net
+
+  # Nodo Competidor 2 - Se conecta al seed
+  belcoin-miner2:
+    build: .
+    ports:
+      - "5001:5000"
+    depends_on:
+      - belcoin-seed
+    environment:
+      - HOST=0.0.0.0
+      - PORT=5000
+    command: python main_multinodo.py --host 0.0.0.0 --port 5000 --mining --difficulty 5 --peer http://belcoin-seed:5000
+    restart: unless-stopped
+    networks:
+      - belcoin-net
+
+  # Nodo Competidor 3
+  belcoin-miner3:
+    build: .
+    ports:
+      - "5002:5000"
+    depends_on:
+      - belcoin-seed
+    command: python main_multinodo.py --host 0.0.0.0 --port 5000 --mining --difficulty 5 --peer http://belcoin-seed:5000
+    restart: unless-stopped
+    networks:
+      - belcoin-net
+
+networks:
+  belcoin-net:
+    driver: bridge

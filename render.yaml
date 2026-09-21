@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: belcoin-seed
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: HOST
+        value: 0.0.0.0
+    startCommand: python main.py --host 0.0.0.0 --port $PORT --mining --difficulty 5
